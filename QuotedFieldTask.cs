@@ -1,3 +1,4 @@
+using System.Linq;
 using NUnit.Framework;
 
 namespace TableParser;
@@ -16,10 +17,17 @@ public class QuotedFieldTaskTests
 	// Добавьте свои тесты
 }
 
+/// <summary>
+/// 
+/// </summary>
+/// 
 class QuotedFieldTask
 {
 	public static Token ReadQuotedField(string line, int startIndex)
 	{
+		var lastQuote = line.Substring(1).IndexOf(line.First()) - 1;
+		var newLine = line.Substring(1, lastQuote);
+		
 		return new Token(line, startIndex, line.Length - startIndex);
 	}
 }

@@ -3,7 +3,6 @@ namespace TableParser;
 public class Token
 {
 	public readonly int Length;
-
 	public readonly int Position;
 	public readonly string Value;
 
