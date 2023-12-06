@@ -20,20 +20,33 @@ public class QuotedFieldTaskTests
     // Добавьте свои тесты
 }
 
-/// <summary>
-/// 
-/// </summary>
-/// 
 class QuotedFieldTask
 {
     public static Token ReadQuotedField(string line, int startIndex)
     {
-        Regex regex = new(@""".+?(?<![^\\]\\)""");
-        MatchCollection matches = regex.Matches(line[startIndex..]);
-        line = (matches.FirstOrDefault()?.Value ?? "")
-            .Replace(@"\\", @"\")
-            .Replace(@"\""", @"""");
+        var quote = line[startIndex];
+        int tokenLength;
+        var tokenValue = line[startIndex..];
+        Regex regex = new($@"{quote}.+?(?<![^\\]\\){quote}");
+        MatchCollection matches = regex.Matches(tokenValue);
+        if (matches.Count > 0)
+        {
+            tokenValue = matches[0]
+                .Value
+                .Replace(@"\\", @"\")
+                .Replace(@"\'", @"'")
+                .Replace(@"\""", @"""");
+            tokenLength = tokenValue.Length;
+            tokenValue = tokenValue.EndsWith(quote) ? 
+                tokenValue[1..^1] : 
+                tokenValue[1..];
+        }
+        else
+        {
+            tokenValue = line[(startIndex + 1)..];
+            tokenLength = tokenValue.Length + 1;
+        }
         
-        return new Token(line, startIndex, line.Length - startIndex);
+        return new Token(tokenValue, startIndex, tokenLength);
     }
 }
