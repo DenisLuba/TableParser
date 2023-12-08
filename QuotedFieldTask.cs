@@ -15,19 +15,19 @@ public class QuotedFieldTaskTests
     [TestCase("a'b'", 1, "b", 3)]
     [TestCase(@"'a\' b'", 0, "a' b", 7)]
     [TestCase(@"some_text ""QF \"""" other_text", 10, "QF \"", 7)]
+    
+
     public void Test(string line, int startIndex, string expectedValue, int expectedLength)
     {
         var actualToken = QuotedFieldTask.ReadQuotedField(line, startIndex);
         Assert.AreEqual(new Token(expectedValue, startIndex, expectedLength), actualToken);
     }
-
-    // Добавьте свои тесты
 }
 
 class QuotedFieldTask
 {
     public static Token ReadQuotedField(string line, int startIndex)
-    {
+    { ;
         var quote = line[startIndex];
         int tokenLength;
         var tokenValue = line[startIndex..];
